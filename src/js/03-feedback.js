@@ -6,9 +6,9 @@ const refs = {
     form: document.querySelector('.feedback-form'),
 }
 const STORAGE_KEY = 'feedback-form-state';
-const savedData = localStorage.getItem(STORAGE_KEY);
-const parseData = JSON.parse(savedData);
-const formData = parseData ? parseData : {};
+const formData = localStorage.getItem(STORAGE_KEY)
+    ? JSON.parse(localStorage.getItem(STORAGE_KEY))
+    : {};
 
 refs.form.addEventListener('submit', onFormSubmit);
 refs.form.addEventListener('input', throttle((e) => {
@@ -16,7 +16,7 @@ refs.form.addEventListener('input', throttle((e) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }, 500))
 
-populateImput();
+populateImput()
 
 function onFormSubmit(e) {
     e.preventDefault();
@@ -39,17 +39,22 @@ function onFormSubmit(e) {
 
         delete formData.message;
         delete formData.email;
+        e.currentTarget.reset();
+        localStorage.removeItem(STORAGE_KEY);
     }
-
-    e.currentTarget.reset();
-    localStorage.removeItem(STORAGE_KEY);
 }
 
 function populateImput() {
-    if (parseData?.email) {
+    const savedData = localStorage.getItem(STORAGE_KEY);
+    const parseData = JSON.parse(savedData);
+    
+    if (parseData === null) {
+        return;
+    }
+    if (parseData.email) {
         refs.input.value = parseData.email;
     }
-    if (parseData?.message) {
+    if (parseData.message) {
         refs.textarea.value = parseData.message;
     }
 }
