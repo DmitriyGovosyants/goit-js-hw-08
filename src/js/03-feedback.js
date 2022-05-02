@@ -8,7 +8,6 @@ const refs = {
 const STORAGE_KEY = 'feedback-form-state';
 const savedData = localStorage.getItem(STORAGE_KEY);
 const parseData = JSON.parse(savedData);
-
 const formData = parseData ? parseData : {};
 
 refs.form.addEventListener('submit', onFormSubmit);
